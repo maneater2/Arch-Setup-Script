@@ -4,7 +4,7 @@
 
 This is my installer for Arch Linux. It sets up a BTRFS system with encrypted `/boot` and full snapper support (both snapshotting and rollback work!). It also includes various system hardening configurations.
 
-The script is mostly based on (could say copied from even) [TommyTrany732's Arch Scripts](https://github.com/TommyTran732/Arch-Setup-Script).
+The script is mostly based on (or could even be considered copied from) [TommyTrany732's Arch Scripts](https://github.com/TommyTran732/Arch-Setup-Script).
 
 ### How to use it?
 1. Download an Arch Linux ISO from [here](https://archlinux.org/download/)
