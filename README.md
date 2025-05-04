@@ -11,10 +11,11 @@ The script is mostly based on (or could even be considered copied from) [TommyTr
 2. Flash the ISO onto an [USB Flash Drive](https://wiki.archlinux.org/index.php/USB_flash_installation_medium).
 3. Boot the live environment.
 4. Connect to the internet.
-5. `git clone https://github.com/maneater2/Arch-Setup-Script/`
-6. `cd Arch-Setup-Script`
-7. `chmod u+x ./install.sh`
-8. `./install.sh`
+6. `pacman -S git`
+7. `git clone https://github.com/maneater2/Arch-Setup-Script/`
+8. `cd Arch-Setup-Script`
+9. `chmod u+x ./install.sh`
+10. `./install.sh`
 
 ### Snapper behavior
 The partition layout I use allows us to replicate the behavior found in openSUSE 🦎
