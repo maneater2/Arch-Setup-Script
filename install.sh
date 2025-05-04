@@ -637,5 +637,5 @@ sed -i 's/^HOME_MODE/#HOME_MODE/g' /mnt/etc/login.defs
 sed -i 's/umask 022/umask 077/g' /mnt/etc/bash.bashrc
 
 # Finish up
-echo "Done, you may now wish to reboot (further changes can be done by chrooting into /mnt)."
+output "Done, you may now wish to reboot (further changes can be done by chrooting into /mnt)."
 exit
