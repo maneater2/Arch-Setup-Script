@@ -14,8 +14,7 @@ The script is mostly based on (or could even be considered copied from) [TommyTr
 6. `pacman -Syu git`
 7. `git clone https://github.com/maneater2/Arch-Setup-Script/`
 8. `cd Arch-Setup-Script`
-9. `chmod u+x ./install.sh`
-10. `./install.sh`
+9. `./install.sh`
 
 ### Snapper behavior
 The partition layout I use allows us to replicate the behavior found in openSUSE 🦎
