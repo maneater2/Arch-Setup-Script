@@ -210,7 +210,7 @@ xwayland_prompt
 # Set pacman maximum parallel download count to processor count unless nproc is lower than 5
 if [ "$(nproc)" -gt 5 ]; then
     output 'Speeding up pacman'
-    sed -i 's/ParallelDownloads = 5/ParallelDownloads = $(nproc)/' /etc/pacman.conf
+    sed -i "s/ParallelDownloads = 5/ParallelDownloads = $(nproc)/" /etc/pacman.conf
 else
     output 'Processor count too low to speed up pacman :('
 fi
