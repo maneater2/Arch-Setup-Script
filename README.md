@@ -11,7 +11,7 @@ The script is mostly based on (or could even be considered copied from) [TommyTr
 2. Flash the ISO onto an [USB Flash Drive](https://wiki.archlinux.org/index.php/USB_flash_installation_medium).
 3. Boot the live environment.
 4. Connect to the internet.
-6. `pacman -S git`
+6. `pacman -Syu git`
 7. `git clone https://github.com/maneater2/Arch-Setup-Script/`
 8. `cd Arch-Setup-Script`
 9. `chmod u+x ./install.sh`
