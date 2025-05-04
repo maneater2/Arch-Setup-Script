@@ -519,7 +519,7 @@ if [ "${install_mode}" = 'desktop' ]; then
 
     mkdir -p /mnt/etc/dconf/db/local.d/locks
 
-    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/main/etc/dconf/db/local.d/locks/automount-disable | tee /mnt/etc/dconf/db/local.d/locks/automount-disable > /dev/null
+    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/dconf/db/local.d/locks/automount-disable | tee /mnt/etc/dconf/db/local.d/locks/automount-disable > /dev/null
     unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/dconf/db/local.d/locks/privacy | tee /mnt/etc/dconf/db/local.d/locks/privacy > /dev/null
 
     unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/dconf/db/local.d/adw-gtk3-dark | tee /mnt/etc/dconf/db/local.d/adw-gtk3-dark > /dev/null
