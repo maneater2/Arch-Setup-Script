@@ -45,8 +45,6 @@ install_mode_selector() {
     esac
 }
 
-
-
 luks_prompt(){
     if [ "${virtualization}" != 'none' ]; then
         output "Virtual machine detected. Do you want to set up LUKS?"
@@ -342,7 +340,6 @@ mount -o ssd,noatime,compress=zstd,nodatacow,nodev,nosuid,noexec,subvol=@/var_sp
 mount -o ssd,noatime,compress=zstd,nodatacow,nodev,nosuid,noexec,subvol=@/var_lib_libvirt_images "${BTRFS}" /mnt/var/lib/libvirt/images
 mount -o ssd,noatime,compress=zstd,nodatacow,nodev,nosuid,noexec,subvol=@/var_lib_machines "${BTRFS}" /mnt/var/lib/machines
 
-
 # GNOME requires /var/lib/gdm and /var/lib/AccountsService to be writeable when booting into a readonly snapshot
 if [ "${install_mode}" = 'desktop' ]; then
     mount -o ssd,noatime,compress=zstd,nodatacow,nodev,nosuid,noexec,subvol=@/var_lib_gdm $BTRFS /mnt/var/lib/gdm
@@ -353,6 +350,9 @@ fi
 if [ "${use_luks}" = '1' ]; then
     mount -o ssd,noatime,compress=zstd,nodatacow,nodev,nosuid,noexec,subvol=@/cryptkey "${BTRFS}" /mnt/cryptkey
 fi
+
+mkdir -p /mnt/boot/efi
+mount -o nodev,nosuid,noexec "${ESP}" /mnt/boot/efi
 
 ## Pacstrap
 output 'Installing the base system (it may take a while).'
