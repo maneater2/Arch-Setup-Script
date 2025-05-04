@@ -478,9 +478,9 @@ fi
 ## Continue kernel hardening
 unpriv curl -s https://raw.githubusercontent.com/secureblue/secureblue/live/files/system/etc/modprobe.d/blacklist.conf | tee /mnt/etc/modprobe.d/blacklist.conf > /dev/null
 if [ "${install_mode}" = 'server' ]; then
-    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/main/etc/sysctl.d/99-server.conf | tee /mnt/etc/sysctl.d/99-server.conf > /dev/null
+    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/sysctl.d/99-server.conf | tee /mnt/etc/sysctl.d/99-server.conf > /dev/null
 else
-    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/main/etc/sysctl.d/99-workstation.conf | tee /mnt/etc/sysctl.d/99-workstation.conf > /dev/null
+    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/sysctl.d/99-workstation.conf | tee /mnt/etc/sysctl.d/99-workstation.conf > /dev/null
 fi
 
 ## Setup NTS
