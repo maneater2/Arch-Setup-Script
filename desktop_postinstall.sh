@@ -34,5 +34,3 @@ flatpak update -y
 # Firewalld setup
 sudo firewall-cmd --set-default-zone=block
 sudo firewall-cmd --permanent --add-service=dhcpv6-client
-sudo firewall-cmd --reload
-sudo firewall-cmd --lockdown-on
