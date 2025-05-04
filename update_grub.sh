@@ -29,9 +29,9 @@ sudo sbctl sign-all
 # Disable root subvol pinning.
 ## This is **extremely** important, as snapper expects to be able to set the default btrfs subvol.
 # shellcheck disable=SC2016
-sudo sed -i 's/rootflags=subvol=${rootsubvol}//g' /mnt/etc/grub.d/10_linux
+sudo sed -i 's/rootflags=subvol=${rootsubvol}//g' /etc/grub.d/10_linux
 # shellcheck disable=SC2016
-sudo sed -i 's/rootflags=subvol=${rootsubvol}//g' /mnt/etc/grub.d/20_linux_xen
+sudo sed -i 's/rootflags=subvol=${rootsubvol}//g' /etc/grub.d/20_linux_xen
 
 # Generate grub config
 sudo grub-mkconfig -o /boot/grub/grub.cfg
