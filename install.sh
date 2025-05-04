@@ -207,6 +207,14 @@ xwayland_prompt
 
 # Installation
 
+# Set pacman maximum parallel download count to processor count unless nproc is lower than 5
+if [ "$(nproc)" -gt 5]; then
+    output 'Speeding up pacman'
+    sed -i 's/ParallelDownloads = 5/ParallelDownloads = $(nproc)/' /etc/pacman.conf
+else
+    output 'Processor count too low to speed up pacman :('
+fi
+
 ## Updating the live environment usually causes more problems than its worth, and quite often can't be done without remounting cowspace with more capacity
 pacman -Sy
 
@@ -215,7 +223,6 @@ pacman -S --noconfirm curl
 
 ## Wipe the disk
 sgdisk --zap-all "${disk}"
-
 
 ## Creating a new partition scheme
 output "Creating new partition scheme on ${disk}."
