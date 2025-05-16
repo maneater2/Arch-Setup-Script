@@ -167,6 +167,16 @@ network_daemon_prompt(){
     fi
 }
 
+timezone_prompt() {
+    output 'Enter your timezone (e.g. Europe/London, America/New_York, Asia/Tokyo):'
+    read -r timezone
+
+    if [ -z "${timezone}" ] || [ ! -f "/usr/share/zoneinfo/${timezone}" ]; then
+        output "Invalid timezone: '${timezone}'. Please try again."
+        timezone_prompt
+    fi
+}
+
 xwayland_prompt(){
     if [ "${install_mode}" = 'desktop' ]; then
         output 'Do you want to use XWayland?'
@@ -204,6 +214,7 @@ fullname_prompt
 user_password_prompt
 hostname_prompt
 network_daemon_prompt
+timezone_prompt
 xwayland_prompt
 
 # Installation
@@ -559,8 +570,7 @@ fi
 arch-chroot /mnt /bin/bash -e <<EOF
 
     # Setting up timezone
-    # Temporarily hardcoding here
-    ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
+    ln -sf /usr/share/zoneinfo/${timezone} /etc/localtime
 
     # Setting up clock
     hwclock --systohc
