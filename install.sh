@@ -81,6 +81,7 @@ luks_passphrase_prompt () {
             output 'Passphrases do not match, please try again.'
             luks_passphrase_prompt
         fi
+	unset luks_passphrase2
     fi
 }
 
@@ -249,6 +250,7 @@ if [ "${use_luks}" = '1' ]; then
     output 'Creating LUKS Container for the root partition.'
     echo -n "${luks_passphrase}" | cryptsetup luksFormat --pbkdf pbkdf2 "${cryptroot}" -d -
     echo -n "${luks_passphrase}" | cryptsetup open "${cryptroot}" cryptroot -d -
+    unset luks_passphrase
     BTRFS='/dev/mapper/cryptroot'
 else
     BTRFS='/dev/disk/by-partlabel/rootfs'
