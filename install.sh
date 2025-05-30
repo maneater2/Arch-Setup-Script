@@ -282,7 +282,7 @@ btrfs su cr /mnt/@/var_spool
 btrfs su cr /mnt/@/var_lib_libvirt_images
 btrfs su cr /mnt/@/var_lib_machines
 if [ "${install_mode}" = 'desktop' ]; then
-    btrfs su cr /mnt/@/var_lib_gdm
+    btrfs su cr /mnt/@/var_lib_sddm
     btrfs su cr /mnt/@/var_lib_AccountsService
 fi
 
