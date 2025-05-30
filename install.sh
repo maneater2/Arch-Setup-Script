@@ -606,16 +606,10 @@ EOF
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /mnt/etc/sudoers
 
 ## Enable services
-systemctl enable apparmor --root=/mnt
-systemctl enable chronyd --root=/mnt
-systemctl enable firewalld --root=/mnt
-systemctl enable fstrim.timer --root=/mnt
-systemctl enable grub-btrfsd.service --root=/mnt
-systemctl enable reflector.timer --root=/mnt
-systemctl enable snapper-timeline.timer --root=/mnt
-systemctl enable snapper-cleanup.timer --root=/mnt
-systemctl enable systemd-oomd --root=/mnt
-systemctl disable systemd-timesyncd --root=/mnt
+services=(apparmor chronyd firewalld fstrim.timer grub-btrfsd.service reflector.timer snapper-timeline.timer snapper-cleanup.timer systemd-oomd)
+for service in "${services[@]}"; do
+    systemctl enable "$service" --root=/mnt &>/dev/null
+done
 
 if [ "${network_daemon}" = 'networkmanager' ]; then
     systemctl enable NetworkManager --root=/mnt
