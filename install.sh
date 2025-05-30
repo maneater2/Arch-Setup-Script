@@ -219,14 +219,6 @@ xwayland_prompt
 
 # Installation
 
-# Set pacman maximum parallel download count to processor count unless nproc is lower than 5
-if [ "$(nproc)" -gt 5 ]; then
-    output 'Speeding up pacman'
-    sed -i "s/ParallelDownloads = 5/ParallelDownloads = $(nproc)/" /etc/pacman.conf
-else
-    output 'Processor count too low to speed up pacman :('
-fi
-
 ## Updating the live environment usually causes more problems than its worth, and quite often can't be done without remounting cowspace with more capacity
 pacman -Sy
 
@@ -376,7 +368,7 @@ mount -o nodev,nosuid,noexec "${ESP}" /mnt/boot/efi
 ## Pacstrap
 output 'Installing the base system (it may take a while).'
 
-pacstrap /mnt apparmor base chrony efibootmgr firewalld grub grub-btrfs inotify-tools linux-firmware linux-hardened linux-lts neovim reflector snapper sudo zram-generator snap-pac btrfs-progs dosfstools
+pacstrap -K /mnt apparmor base chrony efibootmgr firewalld grub grub-btrfs inotify-tools linux-firmware linux-hardened linux-lts neovim reflector snapper sudo zram-generator snap-pac btrfs-progs dosfstools
 
 if [ "${virtualization}" = 'none' ]; then
     CPU=$(grep vendor_id /proc/cpuinfo)
@@ -647,6 +639,17 @@ fi
 sed -i 's/^UMASK.*/UMASK 077/g' /mnt/etc/login.defs
 sed -i 's/^HOME_MODE/#HOME_MODE/g' /mnt/etc/login.defs
 sed -i 's/umask 022/umask 077/g' /mnt/etc/bash.bashrc
+
+# ZRAM configuration.
+output "Configuring ZRAM."
+cat > /mnt/etc/systemd/zram-generator.conf <<EOF
+[zram0]
+zram-size = min(ram, 8192)
+EOF
+
+# Pacman eye-candy features.
+output "Enabling colours, animations, and parallel downloads for pacman."
+sed -Ei 's/^#(Color)$/\1\nILoveCandy/;s/^#(ParallelDownloads).*/\1 = 10/' /mnt/etc/pacman.conf
 
 # Finish up
 output "Done, you may now wish to reboot (further changes can be done by chrooting into /mnt)."
