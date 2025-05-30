@@ -506,10 +506,16 @@ mkdir -p /mnt/etc/systemd/system/sshd.service.d/
 unpriv curl -s https://raw.githubusercontent.com/GrapheneOS/infrastructure/refs/heads/main/etc/systemd/system/sshd.service.d/override.conf | tee /mnt/etc/systemd/system/sshd.service.d/override.conf > /dev/null
 
 ## Disable coredump
-mkdir -p /mnt/etc/security/limits.d/
+mkdir -p /mnt/etc/security/limits.d
 unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/security/limits.d/30-disable-coredump.conf | tee /mnt/etc/security/limits.d/30-disable-coredump.conf > /dev/null
 mkdir -p /mnt/etc/systemd/coredump.conf.d
 unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/systemd/coredump.conf.d/disable.conf | tee /mnt/etc/systemd/coredump.conf.d/disable.conf > /dev/null
+
+# Configure SDDM
+if [ "${install_mode}" = 'desktop' ]; then
+mkdir -p /mnt/etc/sddm.conf.d
+unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/refs/heads/kde/etc/sddm.conf.d/breeze-theme.conf | tee /mnt/etc/sddm.conf.d/breeze-theme.conf > /dev/null
+fi
 
 # Disable XWayland
 if [ "${use_xwayland}" = '0' ]; then
@@ -619,9 +625,6 @@ cat > /mnt/etc/systemd/zram-generator.conf <<EOF
 [zram0]
 zram-size = min(ram, 8192)
 EOF
-
-# SDDM theme.
-output "Changing sddm theme to breeze."
 
 # Pacman eye-candy features.
 output "Enabling colours, animations, and parallel downloads for pacman."
