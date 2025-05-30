@@ -31,3 +31,10 @@ Since this is an encrypted `/boot` setup, GRUB will prompt you for your encrypti
 The implication of this is that an attacker can change your secure boot state with a programmer, replace your grubx64.efi and it will not be detected until its too late.
 
 This type of attack can theoratically be solved by splitting /boot out to a seperate partition and encrypt the root filesystem separately. The key protector for the root filesystem can then be sealed to a TPM with PCR 0+1+2+3+5+7+14. It is a bit more complicated to set up so my installer does not support this (yet!).
+
+# **KDE EDITION!!!**
+## `KDE EDITION!!!`
+### KDE EDITION!!!
+#### KDE EDITION!!!
+##### KDE EDITION!!!
+###### **KDE EDITION...**
