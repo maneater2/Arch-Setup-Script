@@ -575,8 +575,8 @@ arch-chroot /mnt /bin/bash -e <<EOF
     # SDDM Autologin
     if [ "${install_mode}" = 'desktop' ]; then
       echo "[Autologin]
-User=$username
-Session=plasma"
+      User=$username
+      Session=plasma" | tee /etc/sddm.conf.d/autologin.conf > /dev/null
     fi
    
 
