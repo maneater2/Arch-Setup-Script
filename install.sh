@@ -261,7 +261,6 @@ if [ "${use_luks}" = '1' ]; then
     output 'Creating LUKS Container for the root partition.'
     echo -n "${luks_passphrase}" | cryptsetup luksFormat --pbkdf pbkdf2 "${cryptroot}" -d -
     echo -n "${luks_passphrase}" | cryptsetup open "${cryptroot}" cryptroot -d -
-    unset luks_passphrase
     BTRFS='/dev/mapper/cryptroot'
 else
     BTRFS='/dev/disk/by-partlabel/rootfs'
@@ -484,6 +483,7 @@ if [ "${use_luks}" = '1' ]; then
     dd bs=512 count=4 if=/dev/random of=/mnt/cryptkey/.root.key iflag=fullblock
     chmod 000 /mnt/cryptkey/.root.key
     echo -n "${luks_passphrase}" | cryptsetup luksAddKey /dev/disk/by-partlabel/rootfs /mnt/cryptkey/.root.key -d -
+    unset luks_passphrase
     sed -i 's#FILES=()#FILES=(/cryptkey/.root.key)#g' /mnt/etc/mkinitcpio.conf
     sed -i "s#module\.sig_enforce=1#module.sig_enforce=1 rd.luks.key=/cryptkey/.root.key#g" /mnt/etc/default/grub
 fi
