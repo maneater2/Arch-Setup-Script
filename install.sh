@@ -517,24 +517,6 @@ if [ "${use_xwayland}" = '0' ]; then
     unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/systemd/user/org.gnome.Shell%40wayland.service.d/override.conf | tee /mnt/etc/systemd/user/org.gnome.Shell@wayland.service.d/override.conf > /dev/null
 fi
 
-# Setup dconf
-
-if [ "${install_mode}" = 'desktop' ]; then
-    # This doesn't actually take effect atm - need to investigate
-
-    mkdir -p /mnt/etc/dconf/db/local.d/locks
-
-    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/dconf/db/local.d/locks/automount-disable | tee /mnt/etc/dconf/db/local.d/locks/automount-disable > /dev/null
-    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/dconf/db/local.d/locks/privacy | tee /mnt/etc/dconf/db/local.d/locks/privacy > /dev/null
-
-    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/dconf/db/local.d/adw-gtk3-dark | tee /mnt/etc/dconf/db/local.d/adw-gtk3-dark > /dev/null
-    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/dconf/db/local.d/automount-disable | tee /mnt/etc/dconf/db/local.d/automount-disable > /dev/null
-    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/dconf/db/local.d/button-layout | tee /mnt/etc/dconf/db/local.d/button-layout > /dev/null
-    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/dconf/db/local.d/prefer-dark | tee /mnt/etc/dconf/db/local.d/prefer-dark > /dev/null
-    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/dconf/db/local.d/privacy | tee /mnt/etc/dconf/db/local.d/privacy > /dev/null
-    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/dconf/db/local.d/touchpad | tee /mnt/etc/dconf/db/local.d/touchpad > /dev/null
-fi
-
 ## Setup unbound
 
 if [ "${install_mode}" = 'server' ]; then
@@ -584,11 +566,6 @@ arch-chroot /mnt /bin/bash -e <<EOF
     useradd -c "$fullname" -m "$username"
     usermod -aG wheel "$username"
 
-    if [ "${install_mode}" = 'desktop' ]; then
-        # Setting up dconf
-        dconf update
-    fi
-
     # Snapper configuration
     umount /.snapshots
     rm -r /.snapshots
@@ -603,6 +580,7 @@ EOF
 [ -n "$username" ] && echo "Setting user password for ${username}." && echo -e "${user_password}\n${user_password}" | arch-chroot /mnt passwd "$username"
 
 ## Give wheel user sudo access.
+output "Giving sudo access to wheel"
 sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/g' /mnt/etc/sudoers
 
 ## Enable services
@@ -630,6 +608,7 @@ if [ "${install_mode}" = 'server' ]; then
 fi
 
 ## Set umask to 077.
+output "Setting umask to 077."
 sed -i 's/^UMASK.*/UMASK 077/g' /mnt/etc/login.defs
 sed -i 's/^HOME_MODE/#HOME_MODE/g' /mnt/etc/login.defs
 sed -i 's/umask 022/umask 077/g' /mnt/etc/bash.bashrc
@@ -640,6 +619,9 @@ cat > /mnt/etc/systemd/zram-generator.conf <<EOF
 [zram0]
 zram-size = min(ram, 8192)
 EOF
+
+# SDDM theme.
+output "Changing sddm theme to breeze."
 
 # Pacman eye-candy features.
 output "Enabling colours, animations, and parallel downloads for pacman."
