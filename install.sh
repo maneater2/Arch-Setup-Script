@@ -572,6 +572,14 @@ arch-chroot /mnt /bin/bash -e <<EOF
     useradd -c "$fullname" -m "$username"
     usermod -aG wheel "$username"
 
+    # SDDM Autologin
+    if [ "${install_mode}" = 'desktop' ]; then
+      echo "[Autologin]
+User=$username
+Session=plasma"
+    fi
+   
+
     # Snapper configuration
     umount /.snapshots
     rm -r /.snapshots
