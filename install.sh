@@ -303,7 +303,7 @@ chattr +C /mnt/@/var_spool
 chattr +C /mnt/@/var_lib_libvirt_images
 chattr +C /mnt/@/var_lib_machines
 if [ "${install_mode}" = 'desktop' ]; then
-    chattr +C /mnt/@/var_lib_gdm
+    chattr +C /mnt/@/var_lib_sddm
     chattr +C /mnt/@/var_lib_AccountsService
 fi
 
@@ -331,7 +331,7 @@ output 'Mounting the newly created subvolumes.'
 mount -o ssd,noatime,compress=zstd "${BTRFS}" /mnt
 mkdir -p /mnt/{boot,root,home,.snapshots,srv,tmp,var/log,var/crash,var/cache,var/tmp,var/spool,var/lib/libvirt/images,var/lib/machines}
 if [ "${install_mode}" = 'desktop' ]; then
-    mkdir -p /mnt/{var/lib/gdm,var/lib/AccountsService}
+    mkdir -p /mnt/{var/lib/sddm,var/lib/AccountsService}
 fi
 
 if [ "${use_luks}" = '1' ]; then
@@ -351,9 +351,9 @@ mount -o ssd,noatime,compress=zstd,nodatacow,nodev,nosuid,noexec,subvol=@/var_sp
 mount -o ssd,noatime,compress=zstd,nodatacow,nodev,nosuid,noexec,subvol=@/var_lib_libvirt_images "${BTRFS}" /mnt/var/lib/libvirt/images
 mount -o ssd,noatime,compress=zstd,nodatacow,nodev,nosuid,noexec,subvol=@/var_lib_machines "${BTRFS}" /mnt/var/lib/machines
 
-# GNOME requires /var/lib/gdm and /var/lib/AccountsService to be writeable when booting into a readonly snapshot
+# KDE requires /var/lib/sddm and /var/lib/AccountsService to be writeable when booting into a readonly snapshot
 if [ "${install_mode}" = 'desktop' ]; then
-    mount -o ssd,noatime,compress=zstd,nodatacow,nodev,nosuid,noexec,subvol=@/var_lib_gdm $BTRFS /mnt/var/lib/gdm
+    mount -o ssd,noatime,compress=zstd,nodatacow,nodev,nosuid,noexec,subvol=@/var_lib_sddm $BTRFS /mnt/var/lib/sddm
     mount -o ssd,noatime,compress=zstd,nodatacow,nodev,nosuid,noexec,subvol=@/var_lib_AccountsService $BTRFS /mnt/var/lib/AccountsService
 fi
 
@@ -386,7 +386,7 @@ if [ "${network_daemon}" = 'networkmanager' ]; then
 fi
 
 if [ "${install_mode}" = 'desktop' ]; then
-    pacstrap /mnt flatpak gdm gnome-console gnome-control-center nautilus pipewire-alsa pipewire-pulse pipewire-jack
+    pacstrap /mnt flatpak plasma-meta dolphin konsole kate partitionmanager xdg-desktop-portal-gtk sddm kio-admin kio-extras kio-fuse noto-fonts noto-color-emoji pipewire-alsa pipewire-pulse pipewire-jack
 elif [ "${install_mode}" = 'server' ]; then
     pacstrap /mnt openssh unbound
 fi
