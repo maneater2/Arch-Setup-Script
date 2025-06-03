@@ -177,26 +177,6 @@ timezone_prompt() {
     fi
 }
 
-xwayland_prompt(){
-    if [ "${install_mode}" = 'desktop' ]; then
-        output 'Do you want to use XWayland?'
-	output '1) No (Recommended for security)'
-	output '2) Yes'
-	output 'Insert the number of your selection:'
-	read -r choice
-	case $choice in
-            1 ) use_xwayland='0'
-		;;
-            2 ) use_xwayland='1'
-		;;
-            * ) output 'You did not enter a valid selection.'
-            xwayland_prompt
-        esac
-    else
-        use_xwayland='0'
-    fi
-}
-
 # Set hardcoded variables
 locale=en_US
 kblayout=us
@@ -215,7 +195,6 @@ user_password_prompt
 hostname_prompt
 network_daemon_prompt
 timezone_prompt
-xwayland_prompt
 
 # Installation
 
@@ -386,7 +365,7 @@ if [ "${network_daemon}" = 'networkmanager' ]; then
 fi
 
 if [ "${install_mode}" = 'desktop' ]; then
-    pacstrap /mnt flatpak plasma-meta dolphin konsole kate partitionmanager xdg-desktop-portal-gtk sddm kio-admin kio-extras kio-fuse noto-fonts noto-color-emoji pipewire-alsa pipewire-pulse pipewire-jack
+    pacstrap /mnt flatpak plasma-meta dolphin konsole kate partitionmanager xdg-desktop-portal-gtk sddm kio-admin kio-extras kio-fuse noto-fonts noto-fonts-emoji pipewire-alsa pipewire-pulse pipewire-jack
 elif [ "${install_mode}" = 'server' ]; then
     pacstrap /mnt openssh unbound
 fi
@@ -515,12 +494,6 @@ unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/mas
 if [ "${install_mode}" = 'desktop' ]; then
 mkdir -p /mnt/etc/sddm.conf.d
 unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/refs/heads/kde/etc/sddm.conf.d/breeze-theme.conf | tee /mnt/etc/sddm.conf.d/breeze-theme.conf > /dev/null
-fi
-
-# Disable XWayland
-if [ "${use_xwayland}" = '0' ]; then
-    mkdir -p /mnt/etc/systemd/user/org.gnome.Shell@wayland.service.d
-    unpriv curl -s https://raw.githubusercontent.com/maneater2/Arch-Setup-Script/master/etc/systemd/user/org.gnome.Shell%40wayland.service.d/override.conf | tee /mnt/etc/systemd/user/org.gnome.Shell@wayland.service.d/override.conf > /dev/null
 fi
 
 ## Setup unbound
